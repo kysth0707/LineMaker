@@ -112,6 +112,7 @@ pygame.init()
 ScreenWidth = 1000
 ScreenHeight = 600
 screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+pygame.display.set_caption('LineMaker v2.1')
 
 LastAngle = StartAngle
 angle = StartAngle
