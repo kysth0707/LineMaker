@@ -147,7 +147,7 @@ while Run:
 
 	screen.fill((230, 230, 230))
 
-	DrawMap(pygame, screen)
+	DrawMap(pygame, screen, MyFont)
 	if DebugMode:
 		DrawDots(pygame, screen, MapDots)
 

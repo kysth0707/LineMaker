@@ -3,16 +3,23 @@ MapColor = (150, 150, 150)
 StartX, StartY = 50, 50
 SizeX, SizeY = 70, 70
 
-def DrawMap(pygame, screen):
+def DrawMap(pygame, screen, MyFont):
 	for x in range(6):
 		for y in range(6):
-			if (x == 5 and y == 5) or (x == 5 and y == 4) or (x == 4 and y == 5) or (x == 4 and y == 4):
+			if (x == 5 and y == 5) or (x == 4 and y == 5):
+				continue
+			elif (x == 5 and y == 4) or (x == 4 and y == 4):
+				pygame.draw.rect(screen, MapColor, [StartX + x * SizeX, StartY + y * SizeY, SizeX, SizeY * 2], 2)
 				continue
 			pygame.draw.rect(screen, MapColor, [StartX + x * SizeX, StartY + y * SizeY, SizeX, SizeY], 2)
 	for x in range(6):
 		for y in range(6):
-			if (x == 0 and y == 5) or (x == 0 and y == 4) or (x == 1 and y == 5) or (x == 1 and y == 4):
+			if (x == 0 and y == 4) or (x == 1 and y == 4):
+				pygame.draw.rect(screen, MapColor, [StartX + x * SizeX + 70 * 7, StartY + y * SizeY, SizeX, SizeY * 2], 2)
 				continue
+			elif (x == 0 and y == 5) or (x == 1 and y == 5):
+				continue
+		
 			pygame.draw.rect(screen, MapColor, [StartX + x * SizeX + 70 * 7, StartY + y * SizeY, SizeX, SizeY], 2)
 
 	pygame.draw.line(screen, MapColor, (StartX + SizeX * 5, StartY + SizeY * 4), 
@@ -34,6 +41,16 @@ def DrawMap(pygame, screen):
 
 	pygame.draw.circle(screen, (222, 135, 45), (120, 400), 70 * 0.1)
 	pygame.draw.circle(screen, (222, 135, 45), (890, 400), 70 * 0.1)
+
+	screen.blit(MyFont.render("1", True, (0, 0, 0)), (120, 120)) 
+	screen.blit(MyFont.render("2", True, (0, 0, 0)), (130, 130)) 
+	screen.blit(MyFont.render("3", True, (0, 0, 0)), (140, 140)) 
+	screen.blit(MyFont.render("4", True, (0, 0, 0)), (120, 400)) 
+
+	screen.blit(MyFont.render("1", True, (0, 0, 0)), (890, 120)) 
+	screen.blit(MyFont.render("2", True, (0, 0, 0)), (900, 130)) 
+	screen.blit(MyFont.render("3", True, (0, 0, 0)), (910, 140)) 
+	screen.blit(MyFont.render("4", True, (0, 0, 0)), (890, 400)) 
 
 def GetMapDots():
 	ReturnList = []
