@@ -142,6 +142,7 @@ BoxHolding = False
 DebugNum = 0
 ExportData = []
 AddData("dir(FF);")
+AddData("fnd_reset();")
 clock = pygame.time.Clock()
 Run = True
 while Run:
@@ -335,6 +336,7 @@ while Run:
 					DebugNum = 0
 					ExportData = []
 					AddData("dir(FF);")
+					AddData("fnd_reset();")
 
 				elif event.key == pygame.K_SPACE:
 					if not BoxHolding:
