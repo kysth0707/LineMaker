@@ -132,8 +132,8 @@ LastDir = "FF"
 MyFont = pygame.font.SysFont("malgungothic", 15)
 for i in range(4):
 	AngleTextFont.append(MyFont.render(AngleText[i], True, (0, 0, 0)))
-TutorialText = MyFont.render("↑↓ : 앞 뒤 이동 / ←→ : 좌우 이동 / Space 바 : GET ( 한 칸 뒤에서 실행 ) / 키보드 위 숫자 1 ~ 5 : PUT1 ~ 5 ( 한 칸 뒤에서 실행 )", True, (0, 0, 0))
-TutorialText2 = MyFont.render("숫자 패드 엔터 : 추출하기 ( 현재 시간으로 저장됨 ) / 백스페이스 : 재시작 / 클릭 : 박스 추가", True, (0, 0, 0))
+TutorialText = MyFont.render("↑↓ : 앞 뒤 이동 / ←→ : 좌우 이동 / Space 바 : GET ( 한 칸 뒤에서 실행 ) / 키보드 위 숫자 1 ~ 7 : PUT1 ~ 7 ( 한 칸 뒤에서 실행 )", True, (0, 0, 0))
+TutorialText2 = MyFont.render("s : 추출하기 ( 현재 시간으로 저장됨 ) / 백스페이스 : 재시작 / 클릭 : 박스 추가", True, (0, 0, 0))
 TutorialText3 = MyFont.render("ctrl + 화살표 : 시작 각도 설정 / ctrl + 좌클릭 : 시작 좌표 설정 및 해당 설정 저장 ( 각도 설정 이후 필수로 사용해야 함 ) [ 설정 변경 후, 백스페이스 ]", True, (0, 0, 0))
 
 BoxList = []
@@ -280,6 +280,34 @@ while Run:
 						ForwardLoc = (LineTracerLoc[0] + 0.45 * SizeX * AngleVector[0], LineTracerLoc[1] + 0.45 * SizeY * -AngleVector[1])
 						BoxList.append(ForwardLoc)
 						GoBackward(True, False)
+				elif event.key == pygame.K_6:
+					if BoxHolding:
+						BoxHolding = False
+						AddData("PUT6;")
+						if AngleVector == (0, 1):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * (AngleVector[0] + 0.5), LineTracerLoc[1] + 0.55 * SizeY * -AngleVector[1])
+						elif AngleVector == (-1, 0):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * -(AngleVector[0]), LineTracerLoc[1] + 0.55 * SizeY * -(AngleVector[1] - 0.5))
+						elif AngleVector == (0, -1):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * (AngleVector[0] - 0.5), LineTracerLoc[1] + 0.55 * SizeY * -AngleVector[1])
+						elif AngleVector == (1, 0):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * -(AngleVector[0]), LineTracerLoc[1] + 0.55 * SizeY * -(AngleVector[1] + 0.5))
+						BoxList.append(ForwardLoc)
+						GoBackward(True, False)
+				elif event.key == pygame.K_7:
+					if BoxHolding:
+						BoxHolding = False
+						AddData("PUT7;")
+						if AngleVector == (0, 1):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * (AngleVector[0] - 0.5), LineTracerLoc[1] + 0.55 * SizeY * -AngleVector[1])
+						elif AngleVector == (-1, 0):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * -(AngleVector[0]), LineTracerLoc[1] + 0.55 * SizeY * -(AngleVector[1] + 0.5))
+						elif AngleVector == (0, -1):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * (AngleVector[0] + 0.5), LineTracerLoc[1] + 0.55 * SizeY * -AngleVector[1])
+						elif AngleVector == (1, 0):
+							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * -(AngleVector[0]), LineTracerLoc[1] + 0.55 * SizeY * -(AngleVector[1] - 0.5))
+						BoxList.append(ForwardLoc)
+						GoBackward(True, False)		
 
 				elif event.key == pygame.K_BACKSPACE:
 					print("============= RESTART =============")
@@ -322,7 +350,7 @@ while Run:
 								i -= 1
 							i += 1
 
-				elif event.key == pygame.K_KP_ENTER: # 숫자 패드
+				elif event.key == pygame.K_s: # 숫자 패드
 					with open(ReturnPos(f"\\export\\{time.strftime('%Y-%m-%d_%H_%M_%S')}.txt"), "w", encoding="utf-8") as f:
 						f.write('\n'.join(ExportData))
 					print("Export")
