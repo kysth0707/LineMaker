@@ -3,6 +3,7 @@ from Functions import DrawMap, GetMapDots, DrawDots, NearestDotLoc, Abs, SizeX, 
 import time
 import os
 import keyboard
+import math
 # print(keyboard._canonical_names.canonical_names)
 On = True
 Off = False
@@ -37,6 +38,11 @@ if EditorMode:
 		print("StartPos 의 값이 이상합니다! 재 확인 부탁드립니다")
 		print("> StartLocCheckMode 를 활성화한 후, 스페이스 바 눌렀을 때 나온 값이 맞나요?")
 		raise ""
+
+def GetDistance(xy1, xy2):
+	x1, y1 = xy1[0], xy1[1]
+	x2, y2 = xy2[0], xy2[1]
+	return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 def DirFF():
 	global LastDir
@@ -132,8 +138,8 @@ LastDir = "FF"
 MyFont = pygame.font.SysFont("malgungothic", 15)
 for i in range(4):
 	AngleTextFont.append(MyFont.render(AngleText[i], True, (0, 0, 0)))
-TutorialText = MyFont.render("↑↓ : 앞 뒤 이동 / ←→ : 좌우 이동 / Space 바 : GET ( 한 칸 뒤에서 실행 ) / 키보드 위 숫자 1 ~ 7 : PUT1 ~ 7 ( 한 칸 뒤에서 실행 )", True, (0, 0, 0))
-TutorialText2 = MyFont.render("s : 추출하기 ( 현재 시간으로 저장됨 ) / 백스페이스 : 재시작 / 클릭 : 박스 추가", True, (0, 0, 0))
+TutorialText = MyFont.render("Space 바 : GET ( 한 칸 뒤에서 실행 ) / 키보드 위 숫자 1 ~ 0 : PUT1 ~ 10 ( 한 칸 뒤에서 실행 ) / i, o : OLD_PUT8, OLD_PUT9 / P : PAUSE", True, (0, 0, 0))
+TutorialText2 = MyFont.render("↑↓ : 앞 뒤 이동 / ←→ : 좌우 이동 / s : 추출하기 ( 현재 시간으로 저장됨 ) / 백스페이스 : 재시작 / 클릭 : 박스 추가", True, (0, 0, 0))
 TutorialText3 = MyFont.render("ctrl + 화살표 : 시작 각도 설정 / ctrl + 좌클릭 : 시작 좌표 설정 및 해당 설정 저장 ( 각도 설정 이후 필수로 사용해야 함 ) [ 설정 변경 후, 백스페이스 ]", True, (0, 0, 0))
 
 BoxList = []
@@ -226,15 +232,15 @@ while Run:
 					# angle = "↑"
 					angle = 0
 					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
-					if not ForwardLoc in BoxList:
-						GoForward()
+					# if not ForwardLoc in BoxList:
+					GoForward()
 
 				elif event.key == pygame.K_DOWN:
 					# angle = "↓"
 					angle = 2
 					BackwardLoc = (LineTracerLoc[0] + SizeX * -AngleVector[0], LineTracerLoc[1] + SizeY * AngleVector[1])
-					if not BackwardLoc in BoxList:
-						GoBackward()
+					# if not BackwardLoc in BoxList:
+					GoBackward()
 
 				elif event.key == pygame.K_LEFT:
 					# angle = "←"
@@ -307,7 +313,62 @@ while Run:
 						elif AngleVector == (1, 0):
 							ForwardLoc = (LineTracerLoc[0] + -0.45 * SizeX * -(AngleVector[0]), LineTracerLoc[1] + 0.55 * SizeY * -(AngleVector[1] - 0.5))
 						BoxList.append(ForwardLoc)
-						GoBackward(True, False)		
+						GoBackward(True, False)
+				
+				elif event.key == pygame.K_8:
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
+					i = 0
+					for _ in range(len(BoxList)):
+						if GetDistance(BoxList[i],ForwardLoc) <= 15:
+							BoxList.remove(BoxList[i])
+							i -= 1
+						i += 1
+
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0] * 2, LineTracerLoc[1] + SizeY * -AngleVector[1] * 2)
+					BoxList.append(ForwardLoc)
+					
+				elif event.key == pygame.K_9:
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
+					i = 0
+					for _ in range(len(BoxList)):
+						if GetDistance(BoxList[i],ForwardLoc) <= 15:
+							BoxList.remove(BoxList[i])
+							i -= 1
+						i += 1
+
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0] * 1.7, LineTracerLoc[1] + SizeY * -AngleVector[1] * 1.7)
+					BoxList.append(ForwardLoc)
+
+				elif event.key == pygame.K_0:
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
+					i = 0
+					for _ in range(len(BoxList)):
+						if GetDistance(BoxList[i],ForwardLoc) <= 15:
+							BoxList.remove(BoxList[i])
+							i -= 1
+						i += 1
+
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0] * 1.45, LineTracerLoc[1] + SizeY * -AngleVector[1] * 1.45)
+					BoxList.append(ForwardLoc)
+
+
+				elif event.key == pygame.K_i:
+					if BoxHolding:
+						BoxHolding = False
+						AddData("OLD_PUT8;")
+						ForwardLoc = (LineTracerLoc[0] + 1.35 * SizeX * AngleVector[0], LineTracerLoc[1] + 1.35 * SizeY * -AngleVector[1])
+						BoxList.append(ForwardLoc)
+						GoBackward(True, False)
+				elif event.key == pygame.K_o:
+					if BoxHolding:
+						BoxHolding = False
+						AddData("OLD_PUT9;")
+						ForwardLoc = (LineTracerLoc[0] + 1.55 * SizeX * AngleVector[0], LineTracerLoc[1] + 1.55 * SizeY * -AngleVector[1])
+						BoxList.append(ForwardLoc)
+						GoBackward(True, False)
+
+				elif event.key == pygame.K_p:
+					AddData("PAUSE;")
 
 				elif event.key == pygame.K_BACKSPACE:
 					print("============= RESTART =============")
@@ -337,11 +398,12 @@ while Run:
 					AddData("dir(FF);")
 
 				elif event.key == pygame.K_SPACE:
+					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
+					# if ForwardLoc in BoxList:
 					if not BoxHolding:
 						BoxHolding = True
 						AddData(f"GET({DebugNum});")
 						DebugNum += 1
-						ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
 						# LineTracerLoc = (LineTracerLoc[0] + SizeX * -AngleVector[0], LineTracerLoc[1] + SizeY * AngleVector[1])
 						i = 0
 						for _ in range(len(BoxList)):
