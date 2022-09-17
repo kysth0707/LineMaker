@@ -316,6 +316,7 @@ while Run:
 						GoBackward(True, False)
 				
 				elif event.key == pygame.K_8:
+					BoxHolding = False
 					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
 					i = 0
 					for _ in range(len(BoxList)):
@@ -328,6 +329,7 @@ while Run:
 					BoxList.append(ForwardLoc)
 					
 				elif event.key == pygame.K_9:
+					BoxHolding = False
 					ForwardLoc = (LineTracerLoc[0] + SizeX * AngleVector[0], LineTracerLoc[1] + SizeY * -AngleVector[1])
 					i = 0
 					for _ in range(len(BoxList)):
